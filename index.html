@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mohammad Omar Aleem | Electrical Engineering Portfolio</title>
+
+  <!-- Fonts & Tailwind -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Orbitron:wght@500;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'system-ui', 'Segoe UI', 'Roboto', 'Arial'] },
+          colors: {
+            ee: {
+              primary: '#0ea5e9',
+              accent: '#22d3ee',
+              deep: '#0b1220'
+            }
+          },
+          dropShadow: { glow: '0 0 24px rgba(14,165,233,0.35)' },
+          boxShadow: {
+            soft: '0 6px 28px rgba(2,6,23,0.06)',
+            softdark: '0 6px 28px rgba(255,255,255,0.06)'
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- ScrollReveal -->
+  <script src="https://cdn.jsdelivr.net/npm/scrollreveal"></script>
+
+  <style>
+    :root{--ee-primary:#0ea5e9;--ee-accent:#22d3ee;--ee-deep:#0b1220}
+    html{scroll-behavior:smooth}
+    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial}
+
+    /* Subtle background texture */
+    .bg-grid {
+      background-image: radial-gradient(circle at 1px 1px, rgba(100,116,139,.12) 1px, transparent 0);
+      background-size: 22px 22px;
+    }
+    .dark .bg-grid { background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,.06) 1px, transparent 0); }
+
+    /* Utility decorations */
+    .pcb-border{position:relative}
+    .pcb-border:before{content:"";position:absolute;inset:-1px;border:1.4px dashed rgba(34,211,238,.45);border-radius:14px;pointer-events:none}
+    .chip-card{border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(10px)}
+
+    /* Oscilloscope */
+    .oscilloscope svg path{stroke-dasharray:4;animation:dash 1.8s linear infinite}
+    @keyframes dash{to{stroke-dashoffset:-100}}
+    @media (prefers-reduced-motion: reduce){.oscilloscope svg path{animation:none}}
+
+    /* Focus styles */
+    :is(a,button,[role="button"],input,textarea){outline:none}
+    :is(a,button,[role="button"],input,textarea):focus-visible{box-shadow:0 0 0 3px rgba(34,211,238,.6),0 0 0 6px rgba(14,165,233,.35);border-radius:.75rem}
+
+    /* Smooth underline */
+    .link-underline{background-image:linear-gradient(currentColor,currentColor);background-repeat:no-repeat;background-size:0% 2px;background-position:0 100%;transition:background-size .25s ease}
+    .link-underline:hover{background-size:100% 2px}
+
+    /* Card hover */
+    .lift{transition:transform .2s ease, box-shadow .2s ease}
+    .lift:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(2,6,23,.08)}
+    .dark .lift:hover{box-shadow:0 8px 24px rgba(255,255,255,.07)}
+
+    /* Hide scrollbar in modals media container */
+    .no-scrollbar::-webkit-scrollbar{display:none}
+    .no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}
+  </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 dark:bg-[color:var(--ee-deep)] dark:text-slate-100 transition-colors duration-300">
+  <!-- Top progress bar on scroll -->
+  <div id="progress" class="fixed inset-x-0 top-0 h-0.5 z-[60] bg-gradient-to-r from-sky-500 via-cyan-400 to-sky-600 w-0"></div>
+
+  <!-- Theme Toggle -->
+  <button id="themeBtn" aria-label="Toggle theme" class="fixed z-50 bottom-4 right-4 rounded-full px-3 py-2 text-sm font-semibold bg-slate-200 dark:bg-slate-800 hover:brightness-110 shadow-softdark">🌓 Dark</button>
+
+  <!-- NAVBAR -->
+  <nav class="fixed top-0 inset-x-0 z-40 border-b border-white/10 bg-white/75 dark:bg-slate-900/60 backdrop-blur-md">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="#home" class="flex items-center gap-2 font-extrabold text-sky-600 dark:text-sky-300">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h8v8l10-12h-8z"/></svg>
+        <span class="tracking-tight">Omar Aleem</span>
+      </a>
+
+      <button id="menuBtn" class="md:hidden p-2 rounded-lg bg-slate-100 dark:bg-slate-800" aria-label="Open menu" aria-expanded="false">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+
+      <ul id="navLinks" class="hidden md:flex items-center gap-6 text-sm font-semibold">
+        <li><a class="hover:text-sky-500 link-underline" href="#about">About</a></li>
+        <li><a class="hover:text-sky-500 link-underline" href="#projects">Projects</a></li>
+        <li><a class="hover:text-sky-500 link-underline" href="#skills">Skills</a></li>
+        <li><a class="hover:text-sky-500 link-underline" href="#experience">Experience</a></li>
+        <li><a class="hover:text-sky-500 link-underline" href="#certificates">Certificates</a></li>
+        <li><a class="hover:text-sky-500 link-underline" href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <!-- Mobile menu -->
+    <div id="mobileMenu" class="md:hidden hidden border-t border-white/10 bg-white/90 dark:bg-slate-900/90 backdrop-blur">
+      <div class="max-w-6xl mx-auto px-4 py-3 grid gap-3 text-sm font-semibold">
+        <a class="py-1" href="#about">About</a>
+        <a class="py-1" href="#projects">Projects</a>
+        <a class="py-1" href="#skills">Skills</a>
+        <a class="py-1" href="#experience">Experience</a>
+        <a class="py-1" href="#certificates">Certificates</a>
+        <a class="py-1" href="#contact">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header id="home" class="pt-24 relative">
+    <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_40%_at_10%_10%,rgba(14,165,233,.15),transparent),radial-gradient(50%_40%_at_90%_60%,rgba(34,211,238,.12),transparent)]"></div>
+
+    <section class="relative max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-10 items-center">
+      <div class="space-y-6">
+        <span class="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-sky-700 dark:text-cyan-300">
+          <span class="w-2 h-2 rounded-full bg-sky-500 animate-pulse"></span> Electrical Engineering @ Concordia
+        </span>
+        <h1 class="text-4xl md:text-6xl font-extrabold leading-tight">
+          Smart Systems. <span class="text-sky-600 dark:text-cyan-300">Real-Time</span> Logic.<br />
+          Embedded <span class="text-sky-600 dark:text-cyan-300">Thinking</span>.
+        </h1>
+        <p class="text-slate-600 dark:text-slate-300 max-w-prose">I build end-to-end solutions across firmware, digital logic, and cloud— from STM32/ESP32 and VHDL on FPGA to secure Android apps and automation.</p>
+        <div class="flex gap-3 flex-wrap">
+          <a href="#projects" class="px-5 py-2 rounded-lg bg-sky-600 text-white hover:bg-sky-500 drop-shadow-glow">View Projects</a>
+          <a href="assets/resume.pdf" download class="px-5 py-2 rounded-lg border border-slate-300 dark:border-white/20 hover:bg-white/10">Download CV</a>
+          <a href="mailto:momaraleem30@gmail.com" class="px-5 py-2 rounded-lg bg-emerald-600 text-white hover:bg-emerald-500">Contact Me</a>
+        </div>
+      </div>
+
+      <div class="relative rounded-2xl overflow-hidden pcb-border bg-gradient-to-br from-sky-500/10 to-cyan-400/10 p-6 shadow-soft dark:shadow-softdark">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(14,165,233,.15),transparent_40%),radial-gradient(circle_at_80%_60%,rgba(34,211,238,.12),transparent_40%)]"></div>
+        <div class="relative oscilloscope">
+          <svg viewBox="0 0 600 260" class="w-full h-[260px]" fill="none" aria-label="oscilloscope visualization">
+            <rect x="0" y="0" width="600" height="260" rx="12" fill="rgba(2,6,23,.6)" stroke="rgba(255,255,255,.08)"/>
+            <path id="wave1" d="" stroke="url(#grad1)" stroke-width="2"/>
+            <path id="wave2" d="" stroke="rgba(99,102,241,.9)" stroke-width="1.2" opacity=".9"/>
+            <defs>
+              <linearGradient id="grad1" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#22d3ee"/>
+                <stop offset="100%" stop-color="#38bdf8"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <div class="mt-4 grid grid-cols-3 gap-3 text-xs">
+            <div class="chip-card p-3 rounded-lg bg-black/40">Vpp <span class="float-right" id="vpp">5.0V</span></div>
+            <div class="chip-card p-3 rounded-lg bg-black/40">Freq <span class="float-right" id="freq">1.00kHz</span></div>
+            <div class="chip-card p-3 rounded-lg bg-black/40">Duty <span class="float-right" id="duty">50%</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </header>
+
+  <!-- ABOUT -->
+  <section id="about" class="max-w-6xl mx-auto px-4 py-20">
+    <h2 class="text-3xl md:text-4xl font-extrabold mb-8">About Me</h2>
+    <div class="grid md:grid-cols-5 gap-8 items-center">
+      <div class="md:col-span-2 flex justify-center">
+        <div class="relative w-56 h-56">
+          <img src="assets/profile.jpg" alt="Portrait of Mohammad Omar Aleem" class="w-56 h-56 object-cover rounded-full ring-4 ring-sky-500/40 shadow-xl" loading="lazy" />
+        </div>
+      </div>
+      <div class="md:col-span-3">
+        <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
+          I’m <span class="font-semibold">Mohammad Omar Aleem</span>, an Electrical Engineering student at Concordia University who loves building at the intersection of <span class="font-semibold">embedded systems</span>, <span class="font-semibold">digital design</span>, and <span class="font-semibold">automation</span>. I enjoy taking ideas from schematic to firmware to a working prototype—validated with simulation, measurement, and iteration.
+        </p>
+        <ul class="mt-5 grid sm:grid-cols-2 gap-3 text-sm">
+          <li class="pcb-border rounded-lg p-3 bg-white/70 dark:bg-slate-900/60">STM32 / ESP32 • NFC • Motor Drivers</li>
+          <li class="pcb-border rounded-lg p-3 bg-white/70 dark:bg-slate-900/60">VHDL on Nexys A7 • Simulation & Synthesis</li>
+          <li class="pcb-border rounded-lg p-3 bg-white/70 dark:bg-slate-900/60">MATLAB • LTspice • AutoCAD</li>
+          <li class="pcb-border rounded-lg p-3 bg-white/70 dark:bg-slate-900/60">Android App + Firebase + Sheets API</li>
+        </ul>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a href="#projects" class="px-5 py-2 rounded-lg bg-sky-600 text-white hover:bg-sky-500">See My Projects</a>
+          <a href="assets/resume.pdf" download class="px-5 py-2 rounded-lg border border-slate-300 dark:border-white/20 hover:bg-white/10">Download CV</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" class="bg-slate-100/60 dark:bg-white/5 py-20">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="flex items-end justify-between mb-8">
+        <h2 class="text-3xl md:text-4xl font-extrabold">Projects</h2>
+        <div class="hidden md:flex gap-2 text-xs">
+          <span class="px-2 py-1 rounded bg-sky-600/10 text-sky-600 dark:text-cyan-300">#Embedded</span>
+          <span class="px-2 py-1 rounded bg-violet-600/10 text-violet-600">#FPGA</span>
+          <span class="px-2 py-1 rounded bg-emerald-600/10 text-emerald-600">#Automation</span>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- CLOCKIT -->
+        <article class="group rounded-2xl pcb-border bg-white/70 dark:bg-slate-900/60 backdrop-blur-md p-4 lift cursor-pointer" onclick="openProject('clockit')">
+          <figure class="rounded-xl overflow-hidden mb-3">
+            <img alt="ClockIt hardware enclosure" class="w-full h-44 object-cover" src="assets/clockit_unit.png" loading="lazy"/>
+          </figure>
+          <header class="flex items-center justify-between mb-1">
+            <h3 class="font-bold">ClockIt – Smart Attendance</h3>
+            <a class="text-sky-600 hover:underline text-sm" target="_blank" href="https://github.com/MohammadOmarAleem/ClockIt" onclick="event.stopPropagation()">GitHub →</a>
+          </header>
+          <p class="text-sm text-slate-600 dark:text-slate-300">ESP32 NFC + Android + Firebase + Google Sheets. Real-time, low-touch logging.</p>
+        </article>
+
+        <!-- SUMOBOT -->
+        <article class="group rounded-2xl pcb-border bg-white/70 dark:bg-slate-900/60 backdrop-blur-md p-4 lift cursor-pointer" onclick="openProject('sumobot')">
+          <figure class="rounded-xl overflow-hidden mb-3">
+            <img alt="Torquezilla CAD" class="w-full h-44 object-cover" src="assets/sumobot_cad.png" loading="lazy"/>
+          </figure>
+          <header class="flex items-center justify-between mb-1">
+            <h3 class="font-bold">Sumobot – Torquezilla</h3>
+          </header>
+          <p class="text-sm text-slate-600 dark:text-slate-300">STM32F4 PCB, sensor fusion, neodymium adhesion, closed-loop motor control.</p>
+        </article>
+
+        <!-- FPGA ROOM COUNTER -->
+        <article class="group rounded-2xl pcb-border bg-white/70 dark:bg-slate-900/60 backdrop-blur-md p-4 lift cursor-pointer" onclick="openProject('fpga')">
+          <figure class="rounded-xl overflow-hidden mb-3">
+            <img alt="FPGA demo" class="w-full h-44 object-cover" src="assets/room_occup.png" loading="lazy"/>
+          </figure>
+          <header class="flex items-center justify-between mb-1">
+            <h3 class="font-bold">Digital Room Occupancy (FPGA)</h3>
+          </header>
+          <p class="text-sm text-slate-600 dark:text-slate-300">Nexys A7 VHDL design; threshold register + comparator; synthesis-validated.</p>
+        </article>
+
+        <!-- OTHELLO -->
+        <article class="group rounded-2xl pcb-border bg-white/70 dark:bg-slate-900/60 backdrop-blur-md p-4 lift cursor-pointer" onclick="openProject('othello')">
+          <figure class="rounded-xl overflow-hidden mb-3">
+            <img alt="Othello app screens" class="w-full h-44 object-cover" src="assets/othello.png" loading="lazy"/>
+          </figure>
+          <header class="flex items-center justify-between mb-1">
+            <h3 class="font-bold">Othello – C++</h3>
+            <a class="text-sky-600 hover:underline text-sm" target="_blank" href="https://github.com/MohammadOmarAleem/Othello-Board-Game-Implementation-" onclick="event.stopPropagation()">GitHub →</a>
+          </header>
+          <p class="text-sm text-slate-600 dark:text-slate-300">Optimized gameplay, persistent state, and robust input system.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills" class="max-w-6xl mx-auto px-4 py-20">
+    <h2 class="text-3xl md:text-4xl font-extrabold mb-8">Skills</h2>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="pcb-border rounded-xl p-4 bg-white/70 dark:bg-slate-900/60">
+        <h3 class="font-bold mb-2">Embedded & Firmware</h3>
+        <ul class="text-sm space-y-1 text-slate-600 dark:text-slate-300">
+          <li>STM32 (HAL), ESP32 (IDF/Arduino)</li>
+          <li>NFC, UART, SPI, I2C, PWM, motor drivers</li>
+          <li>RT concepts, low-level C</li>
+        </ul>
+      </div>
+      <div class="pcb-border rounded-xl p-4 bg-white/70 dark:bg-slate-900/60">
+        <h3 class="font-bold mb-2">Digital Design</h3>
+        <ul class="text-sm space-y-1 text-slate-600 dark:text-slate-300">
+          <li>VHDL on Xilinx Nexys A7</li>
+          <li>Simulation, synthesis, resource analysis</li>
+          <li>Test benches & timing</li>
+        </ul>
+      </div>
+      <div class="pcb-border rounded-xl p-4 bg-white/70 dark:bg-slate-900/60">
+        <h3 class="font-bold mb-2">Tools & Platforms</h3>
+        <ul class="text-sm space-y-1 text-slate-600 dark:text-slate-300">
+          <li>MATLAB, LTspice, AutoCAD</li>
+          <li>Azure/Intune/Exchange Admin</li>
+          <li>GitHub, Power Automate</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience" class="bg-slate-100/60 dark:bg-white/5 py-20">
+    <div class="max-w-6xl mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-extrabold mb-10">Experience</h2>
+      <ol class="relative border-l-2 border-sky-600/50 ml-3">
+        <li class="mb-10 ml-6">
+          <span class="absolute -left-3 top-1 w-6 h-6 bg-sky-600 rounded-full ring-4 ring-sky-600/20"></span>
+          <div class="pcb-border rounded-xl p-4 bg-white/70 dark:bg-slate-900/60">
+            <h3 class="font-bold">IT Intern – Foodtastic</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400">May 2024 – Aug 2024</p>
+            <ul class="mt-2 text-sm text-slate-600 dark:text-slate-300 list-disc list-inside space-y-1">
+              <li>Managed Azure, Entra/Intune, Exchange for 300+ users</li>
+              <li>Automation via Power Automate + Python (−60% manual work)</li>
+              <li>Tier-2 ransomware incident response; infra hardening</li>
+              <li>Phishing simulations → +35% detection</li>
+              <li>Implemented Ring Updates post Crowdstrike incident</li>
+            </ul>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- CERTIFICATES -->
+  <section id="certificates" class="bg-slate-100/60 dark:bg-white/5 py-20">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="flex items-end justify-between mb-8">
+        <h2 class="text-3xl md:text-4xl font-extrabold">Certificates</h2>
+        <div class="hidden md:flex gap-2 text-xs">
+          <span class="px-2 py-1 rounded bg-sky-600/10 text-sky-600 dark:text-cyan-300">#Coursework</span>
+          <span class="px-2 py-1 rounded bg-emerald-600/10 text-emerald-600">#Verified</span>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- AutoCAD -->
+        <article class="group rounded-2xl pcb-border bg-white/70 dark:bg-slate-900/60 backdrop-blur-md p-4 lift">
+          <figure class="rounded-xl overflow-hidden mb-3">
+            <img alt="AutoCAD certificate preview" class="w-full h-44 object-cover" src="assets/certs/autocad_preview.png" loading="lazy" onerror="this.src='https://cdn.jsdelivr.net/gh/tabler/tabler-icons/icons-png/file-certificate.png'; this.classList.add('object-contain','bg-white')"/>
+          </figure>
+          <header class="mb-1">
+            <h3 class="font-bold">The Complete AutoCAD 2018–21 Course</h3>
+            <p class="text-xs text-slate-500">Udemy • Jaiprakash Pandey</p>
+          </header>
+          <div class="flex gap-2 mt-3">
+            <button class="px-4 py-2 rounded-lg bg-sky-600 text-white" onclick="openCert('autocad')">View Certificate</button>
+            <a class="px-4 py-2 rounded-lg border border-slate-300 dark:border-white/20" href="assets/certs/autocad.pdf" download>Download PDF</a>
+          </div>
+        </article>
+
+        <!-- CAE Immersion -->
+        <article class="group rounded-2xl pcb-border bg-white/70 dark:bg-slate-900/60 backdrop-blur-md p-4 lift">
+          <figure class="rounded-xl overflow-hidden mb-3">
+            <img alt="CAE Immersion certificate preview" class="w-full h-44 object-cover" src="assets/certs/cae_preview.png" loading="lazy" onerror="this.src='https://cdn.jsdelivr.net/gh/tabler/tabler-icons/icons-png/file-certificate.png'; this.classList.add('object-contain','bg-white')"/>
+          </figure>
+          <header class="mb-1">
+            <h3 class="font-bold">CAE Immersion Training Program</h3>
+            <p class="text-xs text-slate-500">Concordia University • May 2025</p>
+          </header>
+          <div class="flex gap-2 mt-3">
+            <button class="px-4 py-2 rounded-lg bg-sky-600 text-white" onclick="openCert('cae')">View Certificate</button>
+            <a class="px-4 py-2 rounded-lg border border-slate-300 dark:border-white/20" href="assets/certs/cae_immersion.pdf" download>Download PDF</a>
+          </div>
+        </article>
+
+        <!-- Power BI -->
+        <article class="group rounded-2xl pcb-border bg-white/70 dark:bg-slate-900/60 backdrop-blur-md p-4 lift">
+          <figure class="rounded-xl overflow-hidden mb-3">
+            <img alt="Power BI certificate preview" class="w-full h-44 object-cover" src="assets/certs/powerbi_preview.png" loading="lazy" onerror="this.src='https://cdn.jsdelivr.net/gh/tabler/tabler-icons/icons-png/file-certificate.png'; this.classList.add('object-contain','bg-white')"/>
+          </figure>
+          <header class="mb-1">
+            <h3 class="font-bold">Power BI Masterclass from Scratch (2025)</h3>
+            <p class="text-xs text-slate-500">Udemy • Learn Anywhere</p>
+          </header>
+          <div class="flex gap-2 mt-3">
+            <button class="px-4 py-2 rounded-lg bg-sky-600 text-white" onclick="openCert('powerbi')">View Certificate</button>
+            <a class="px-4 py-2 rounded-lg border border-slate-300 dark:border-white/20" href="assets/certs/powerbi.pdf" download>Download PDF</a>
+          </div>
+        </article>
+
+        <!-- Six Sigma White Belt -->
+        <article class="group rounded-2xl pcb-border bg-white/70 dark:bg-slate-900/60 backdrop-blur-md p-4 lift">
+          <figure class="rounded-xl overflow-hidden mb-3">
+            <img alt="Six Sigma White Belt certificate preview" class="w-full h-44 object-cover" src="assets/certs/sixsigma_preview.png" loading="lazy" onerror="this.src='https://cdn.jsdelivr.net/gh/tabler/tabler-icons/icons-png/file-certificate.png'; this.classList.add('object-contain','bg-white')"/>
+          </figure>
+          <header class="mb-1">
+            <h3 class="font-bold">Lean Six Sigma – White Belt</h3>
+            <p class="text-xs text-slate-500">Stymiest Consulting • 2025</p>
+          </header>
+          <div class="flex gap-2 mt-3">
+            <button class="px-4 py-2 rounded-lg bg-sky-600 text-white" onclick="openCert('sixsigma')">View Certificate</button>
+            <a class="px-4 py-2 rounded-lg border border-slate-300 dark:border-white/20" href="assets/certs/sixsigma_white_belt.pdf" download>Download PDF</a>
+          </div>
+        </article>
+
+        <!-- Cyber Security -->
+        <article class="group rounded-2xl pcb-border bg-white/70 dark:bg-slate-900/60 backdrop-blur-md p-4 lift">
+          <figure class="rounded-xl overflow-hidden mb-3">
+            <img alt="Cyber Security certificate preview" class="w-full h-44 object-cover" src="assets/certs/cybersec_preview.png" loading="lazy" onerror="this.src='https://cdn.jsdelivr.net/gh/tabler/tabler-icons/icons-png/file-certificate.png'; this.classList.add('object-contain','bg-white')"/>
+          </figure>
+          <header class="mb-1">
+            <h3 class="font-bold">Absolute Beginner’s Guide to Cyber Security – Part 1</h3>
+            <p class="text-xs text-slate-500">Udemy • 2024</p>
+          </header>
+          <div class="flex gap-2 mt-3">
+            <button class="px-4 py-2 rounded-lg bg-sky-600 text-white" onclick="openCert('cybersec')">View Certificate</button>
+            <a class="px-4 py-2 rounded-lg border border-slate-300 dark:border-white/20" href="assets/certs/cybersecurity_beginner.pdf" download>Download PDF</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- TERMINAL WIDGET -->
+  <section class="max-w-6xl mx-auto px-4 py-16">
+    <div class="pcb-border rounded-2xl overflow-hidden">
+      <div class="bg-slate-900 text-slate-100 px-4 py-2 flex items-center gap-2 text-xs">
+        <span class="w-3 h-3 rounded-full bg-red-500"></span>
+        <span class="w-3 h-3 rounded-full bg-yellow-400"></span>
+        <span class="w-3 h-3 rounded-full bg-green-500"></span>
+        <span class="ml-2 opacity-70">/dev/ttyUSB0</span>
+      </div>
+      <div class="bg-slate-950 text-emerald-300 p-4 font-mono text-sm min-h-[140px]" id="terminal" aria-live="polite">$ idf.py build && idf.py -p /dev/ttyUSB0 flash</div>
+    </div>
+  </section>
+
+<!-- CONTACT -->
+<section id="contact" class="bg-slate-100/60 dark:bg-white/5 py-20">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col items-center">
+      <h2 class="text-3xl md:text-4xl font-extrabold mb-4 text-center">Let’s Collaborate</h2>
+      <p class="text-slate-600 dark:text-slate-300 text-center mb-8">
+        Open to Full Time roles related to Electrical Engineering
+      </p>
+  
+      <form id="contactForm"
+            action="https://formspree.io/f/mpwjzppn"
+            method="POST"
+            class="pcb-border rounded-2xl bg-white/70 dark:bg-slate-900/60 p-6 grid gap-4 w-full max-w-xl">
+  
+        <!-- Honeypot (spam trap) -->
+        <input type="text" name="_gotcha" class="hidden" tabindex="-1" autocomplete="off"/>
+  
+        <!-- Optional subject shown in your inbox -->
+        <input type="hidden" name="_subject" value="New message from mohammadomaraleem.com"/>
+  
+        <div>
+          <label class="text-xs" for="name">Name</label>
+          <input id="name" name="name" required
+                 class="mt-1 w-full rounded-lg bg-slate-100 dark:bg-slate-800 px-3 py-2"
+                 placeholder="Your name"/>
+        </div>
+  
+        <div>
+          <label class="text-xs" for="email">Email</label>
+          <input id="email" name="email" type="email" required
+                 class="mt-1 w-full rounded-lg bg-slate-100 dark:bg-slate-800 px-3 py-2"
+                 placeholder="name@example.com"/>
+        </div>
+  
+        <div>
+          <label class="text-xs" for="message">Message</label>
+          <textarea id="message" name="message" rows="4" required
+                    class="mt-1 w-full rounded-lg bg-slate-100 dark:bg-slate-800 px-3 py-2"
+                    placeholder="How can I help?"></textarea>
+        </div>
+  
+        <button id="contactBtn" type="submit"
+                class="mt-1 px-5 py-2 rounded-lg bg-sky-600 text-white hover:bg-sky-500 disabled:opacity-60">
+          Send
+        </button>
+  
+        <!-- Status line for a11y + UX -->
+        <p id="contactStatus" class="text-sm h-5" aria-live="polite"></p>
+  
+        <!-- Fallback contact links -->
+        <div class="pt-2 text-center text-sky-600 text-sm">
+          Or reach me directly:
+          <a class="link-underline" href="mailto:momaraleem30@gmail.com">momaraleem30@gmail.com</a> ·
+          <a class="link-underline" target="_blank" href="https://www.linkedin.com/in/mohammadomaraleem/">LinkedIn</a> ·
+          <a class="link-underline" target="_blank" href="https://github.com/MohammadOmarAleem">GitHub</a>
+        </div>
+      </form>
+    </div>
+  </section>
+  
+
+  <footer class="text-center text-xs py-8 opacity-70">© 2025 Mohammad Omar Aleem • Built with love, logic, and low-noise traces</footer>
+
+  <!-- PROJECT GALLERY MODAL -->
+  <div id="modal" class="fixed inset-0 hidden items-center justify-center bg-black/70 p-4">
+    <div class="max-w-4xl w-full rounded-2xl bg-white dark:bg-slate-900 p-0 overflow-hidden relative">
+      <button class="absolute right-3 top-3 z-20 text-slate-300 hover:text-white" onclick="closeModal()" aria-label="Close gallery">✕</button>
+      <div class="grid md:grid-cols-3 gap-0">
+        <div class="md:col-span-2 bg-slate-950 flex items-center justify-center relative">
+          <button class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white rounded-full w-9 h-9" onclick="prevImg()" aria-label="Previous image">‹</button>
+          <img id="modalImg" alt="Project image" class="max-h-[70vh] object-contain" />
+          <button class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white rounded-full w-9 h-9" onclick="nextImg()" aria-label="Next image">›</button>
+        </div>
+        <div class="p-5 space-y-3">
+          <h3 id="modalTitle" class="text-xl font-bold"></h3>
+          <p id="modalBody" class="text-sm text-slate-600 dark:text-slate-300"></p>
+          <div id="thumbs" class="mt-3 grid grid-cols-4 gap-2"></div>
+          <div id="modalLinks" class="text-sm pt-2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CERTIFICATE VIEWER MODAL -->
+  <div id="certModal" class="fixed inset-0 hidden items-center justify-center bg-black/70 p-4">
+    <div class="max-w-5xl w-full rounded-2xl bg-white dark:bg-slate-900 overflow-hidden relative">
+      <button class="absolute right-3 top-3 z-20 text-slate-300 hover:text-white" onclick="closeCert()" aria-label="Close certificate">✕</button>
+      <div class="p-4 md:p-6">
+        <h3 id="certTitle" class="text-xl font-bold mb-3"></h3>
+        <div id="certContainer" class="w-full flex justify-center"></div>
+        <div class="mt-3">
+          <a id="certDownload" class="px-4 py-2 rounded-lg bg-sky-600 text-white" href="" download>Download PDF</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ==================== Theme ==================== */
+    const themeBtn = document.getElementById('themeBtn');
+    function setTheme(dark){
+      document.documentElement.classList.toggle('dark', dark);
+      localStorage.setItem('prefers-dark', dark ? '1' : '0');
+      themeBtn.textContent = dark ? '🌞 Light' : '🌓 Dark';
+    }
+    // Initialize from localStorage or system
+    const saved = localStorage.getItem('prefers-dark');
+    const prefersDark = saved !== null ? saved === '1' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+    setTheme(prefersDark);
+    themeBtn.addEventListener('click',()=>setTheme(!document.documentElement.classList.contains('dark')));
+
+    /* ==================== Mobile Nav ==================== */
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const navLinks = document.getElementById('navLinks');
+    menuBtn?.addEventListener('click',()=>{
+      const open = mobileMenu.classList.toggle('hidden');
+      menuBtn.setAttribute('aria-expanded', String(!open));
+    });
+    // Close mobile menu on link click
+    mobileMenu?.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
+      mobileMenu.classList.add('hidden');
+      menuBtn.setAttribute('aria-expanded','false');
+    }));
+
+    /* ==================== Scroll progress & Scrollspy ==================== */
+    const progress = document.getElementById('progress');
+    const sections = Array.from(document.querySelectorAll('section[id]'));
+    const links = Array.from(document.querySelectorAll('nav a[href^="#"]'));
+
+    function onScroll(){
+      const scrollTop = window.scrollY;
+      const height = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = Math.min(100, Math.max(0, (scrollTop/height)*100));
+      progress.style.width = pct + '%';
+
+      // Scrollspy
+      let current = sections[0]?.id;
+      for(const sec of sections){
+        const rect = sec.getBoundingClientRect();
+        if(rect.top <= 80 && rect.bottom >= 80){ current = sec.id; break; }
+      }
+      links.forEach(a=>{
+        const on = a.getAttribute('href') === '#' + current;
+        a.classList.toggle('text-sky-600', on);
+      });
+    }
+    document.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    /* ==================== ScrollReveal ==================== */
+    ScrollReveal().reveal('#projects article',{distance:'24px',origin:'bottom',interval:120});
+    ScrollReveal().reveal('#skills .pcb-border',{distance:'20px',origin:'bottom',interval:100});
+
+    /* ==================== Oscilloscope ==================== */
+    const wave1 = document.getElementById('wave1');
+    const wave2 = document.getElementById('wave2');
+    const vppEl = document.getElementById('vpp');
+    const freqEl = document.getElementById('freq');
+    const dutyEl = document.getElementById('duty');
+    const W=600, OY=130; let t=0, f=1, duty=50, vpp=5;
+    function draw(){
+      let path1 = `M 0 ${OY}`;
+      for(let x=0;x<=W;x+=4){ const y = OY - Math.sin((x+t)/26)*40; path1 += ` L ${x} ${y}`; }
+      wave1.setAttribute('d', path1);
+      let path2 = `M 0 ${OY}`;
+      for(let x=0;x<=W;x+=40){ const high = (Math.floor((x+t)/80)%2)===0; path2 += ` L ${x} ${high?OY-28:OY+28} L ${x+40} ${high?OY-28:OY+28}`; }
+      wave2.setAttribute('d', path2);
+      t+=1.8; f = 1 + ((Math.sin(t/60)+1)/2)*4; duty = 40 + ((Math.sin(t/50)+1)/2)*20; vpp = 4.5 + ((Math.sin(t/70)+1)/2)*1;
+      freqEl.textContent = f.toFixed(2)+"kHz"; dutyEl.textContent = duty.toFixed(0)+"%"; vppEl.textContent = vpp.toFixed(1)+"V";
+      requestAnimationFrame(draw);
+    }
+    draw();
+
+    /* ==================== Terminal typing ==================== */
+    const term = document.getElementById('terminal');
+    const lines = ['$ idf.py build','Compiling app...','Linking...','Build complete in 3.2s','$ idf.py -p /dev/ttyUSB0 flash','Connecting....................................','Writing at 0x00010000...','Hash of data verified.','Hard resetting via RTS pin...','Done.'];
+    let li=0; function step(){ if(li<lines.length){ term.textContent += "\n"+lines[li++]; setTimeout(step, 420);} }
+    setTimeout(step, 800);
+
+    /* ==================== Project Gallery ==================== */
+    const PROJECTS = {
+      clockit: {
+        title: 'ClockIt – Smart Attendance (ESP32 + Android)',
+        body: 'Designed a real-time NFC attendance logging system using ESP32 and Mifare Classic cards. The ESP32 authenticates cards, connects over Wi-Fi, and logs entries into Firebase. A custom Android app (Java + Firebase SDK) allows admins to visualize attendance in real-time,  while a Google Sheets API integration provides automatic spreadsheet logging for reports. Optimized for low-touch interaction (under 1s scan time), reducing manual data entry errors by ~70%.',
+        images: [ 'assets/clockit_unit.png','assets/clockit_app.png','assets/clockit_breadboard.png' ],
+        links: [ { href: 'https://github.com/MohammadOmarAleem/ClockIt', label: 'GitHub' } ]
+      },
+      sumobot: {
+        title: 'SUMOBOT – Torquezilla (STM32F4)',
+        body: 'Engineered a competition-grade autonomous Sumobot powered by STM32F4. Designed a custom 4-layer PCB with motor drivers and power regulation. Integrated sensor fusion from IR proximity and edge detectors to navigate the arena. Used neodymium magnets for chassis adhesion to the steel floor, enabling higher torque and stability. Implemented closed-loop PID motor control in C, with modular firmware architecture for rapid iteration.',
+        images: [ 'assets/sumobot_cad.png','assets/sumobot_pcb.png','assets/sumobot_real.png' ],
+        links: []
+      },
+      fpga: {
+        title: 'Digital Room Occupancy (VHDL on Nexys A7)',
+        body: 'Developed a digital occupancy counter on the Xilinx Nexys A7 board using VHDL. Implemented edge-triggered increment/decrement logic with a programmable 8-bit threshold comparator. Validated functionality through ModelSim simulation and Vivado synthesis, achieving low resource usage (29 LUTs / 9 FFs). Designed for real-time room monitoring applications, demonstrating how FPGA-based systems can achieve reliable parallel digital logic without a CPU.',
+        images: [ 'assets/room_occup.png' ],
+        links: []
+      },
+      othello: {
+        title: 'Othello – C++',
+        body: 'Interactive console app with score, save/load, efficient state management using STL containers and OOP.',
+        images: [ 'assets/othello.png' ],
+        links: [ { href: 'https://github.com/MohammadOmarAleem/Othello-Board-Game-Implementation-', label: 'GitHub' } ]
+      }
+    };
+
+    let currentKey = null, currentIndex = 0;
+    const modal = document.getElementById('modal');
+    const modalImg = document.getElementById('modalImg');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalBody = document.getElementById('modalBody');
+    const thumbs = document.getElementById('thumbs');
+    const modalLinks = document.getElementById('modalLinks');
+
+    function openProject(key){
+      currentKey = key; currentIndex = 0; const p = PROJECTS[key];
+      modalTitle.textContent = p.title; modalBody.textContent = p.body;
+      renderImage(); renderThumbs(); renderLinks();
+      modal.classList.remove('hidden'); modal.classList.add('flex');
+    }
+    window.openProject = openProject;
+
+    function renderImage(){ const p = PROJECTS[currentKey]; if(!p) return; modalImg.src = p.images[currentIndex]; }
+    function renderThumbs(){
+      const p = PROJECTS[currentKey]; thumbs.innerHTML = '';
+      p.images.forEach((src, i)=>{
+        const a = document.createElement('button');
+        a.className = 'border rounded-md overflow-hidden ' + (i===currentIndex? 'ring-2 ring-sky-500' : 'opacity-80 hover:opacity-100');
+        a.innerHTML = `<img src="${src}" alt="thumb ${i+1}" class="w-full h-16 object-cover">`;
+        a.addEventListener('click', ()=>{currentIndex=i; renderImage(); renderThumbs();});
+        thumbs.appendChild(a);
+      });
+    }
+    function renderLinks(){
+      const p = PROJECTS[currentKey]; modalLinks.innerHTML = '';
+      (p.links||[]).forEach(l=>{
+        const el = document.createElement('a'); el.href=l.href; el.target='_blank'; el.className='text-sky-600 hover:underline mr-3'; el.textContent=l.label + ' →'; modalLinks.appendChild(el);
+      });
+    }
+    function closeModal(){ modal.classList.add('hidden'); modal.classList.remove('flex'); }
+    window.closeModal = closeModal;
+    function nextImg(){ const p=PROJECTS[currentKey]; if(!p) return; currentIndex=(currentIndex+1)%p.images.length; renderImage(); renderThumbs(); }
+    function prevImg(){ const p=PROJECTS[currentKey]; if(!p) return; currentIndex=(currentIndex-1+p.images.length)%p.images.length; renderImage(); renderThumbs(); }
+    window.nextImg = nextImg; window.prevImg = prevImg;
+
+    /* ==================== Certificates ==================== */
+    const CERTS = {
+      autocad: { title: 'The Complete AutoCAD 2018–21 Course — Udemy', pdf: 'assets/certs/autocad.pdf' },
+      powerbi: { title: 'Power BI Masterclass from Scratch (2025) — Udemy', pdf: 'assets/certs/powerbi.pdf' },
+      sixsigma: { title: 'Lean Six Sigma — White Belt (2025)', pdf: 'assets/certs/sixsigma_white_belt.pdf' },
+      cybersec: { title: 'Absolute Beginner’s Guide to Cyber Security — Part 1 (2024)', pdf: 'assets/certs/cybersecurity_beginner.pdf' },
+      cae: { title: 'CAE Immersion Training Program — Concordia University', pdf: 'assets/certs/cae_immersion.pdf' }
+    };
+
+    const certModal = document.getElementById('certModal');
+    const certTitle = document.getElementById('certTitle');
+    const certDownload = document.getElementById('certDownload');
+
+    function openCert(key){
+      const c = CERTS[key]; if(!c) return;
+      certTitle.textContent = c.title;
+      // Image preview (fast) with PDF download kept intact
+      const certContainer = document.getElementById('certContainer');
+      certContainer.innerHTML = `<img src="assets/certs/${key}_preview.png" alt="${c.title}" class="max-h-[70vh] w-auto mx-auto rounded-lg">`;
+      certDownload.href = c.pdf;
+      certModal.classList.remove('hidden'); certModal.classList.add('flex');
+    }
+    window.openCert = openCert;
+    function closeCert(){ certModal.classList.add('hidden'); certModal.classList.remove('flex'); }
+    window.closeCert = closeCert;
+
+    /* ==================== Contact form (Formspree) ==================== */
+(() => {
+  const form = document.getElementById('contactForm');
+  if (!form) return;
+
+  const btn  = document.getElementById('contactBtn');
+  const stat = document.getElementById('contactStatus');
+
+  // Simple front-end validation message
+  function invalid(msg) {
+    stat.textContent = '❌ ' + msg;
+    stat.classList.remove('text-emerald-500');
+    stat.classList.add('text-red-500');
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // Basic validation
+    const name = form.name.value.trim();
+    const email = form.email.value.trim();
+    const message = form.message.value.trim();
+    if (!name || !email || !message) return invalid('Please fill out all fields.');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return invalid('Please enter a valid email.');
+
+    stat.textContent = '';
+    btn.disabled = true;
+    const original = btn.textContent;
+    btn.textContent = 'Sending…';
+
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: new FormData(form)
+      });
+
+      if (res.ok) {
+        form.reset();
+        stat.textContent = '✅ Message sent — I’ll get back to you soon.';
+        stat.classList.remove('text-red-500');
+        stat.classList.add('text-emerald-500');
+        btn.textContent = 'Sent';
+        setTimeout(() => { btn.textContent = original; btn.disabled = false; }, 1500);
+      } else {
+        const data = await res.json().catch(()=>({}));
+        const msg = data?.errors?.[0]?.message || 'Something went wrong. Please email me directly.';
+        throw new Error(msg);
+      }
+    } catch (err) {
+      stat.textContent = '❌ ' + err.message;
+      stat.classList.remove('text-emerald-500');
+      stat.classList.add('text-red-500');
+      btn.textContent = original;
+      btn.disabled = false;
+    }
+  });
+})();
+
+  </script>
+  
+</body>
+</html>
+
